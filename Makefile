@@ -28,7 +28,7 @@ lint: ## Lint Go files
 
 build: ## Builds the service
 	make clean
-	go build -tags appsec -o .bin/ github.com/shortcuts/codes/cmd
+	go build -tags=go_json -tags appsec -o .bin/ github.com/shortcuts/codes/cmd
 
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
@@ -46,3 +46,6 @@ restart: ## Stops then run the service
 
 stop: ## Stops the server started in the background
 	@killall $* &> /dev/null || exit 0
+
+test: ## Runs the test suites
+	go test -timeout 30s -race github.com/shortcuts/codes/cmd/...
