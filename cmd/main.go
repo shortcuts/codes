@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,9 +17,9 @@ type router struct {
 	*gin.Engine
 }
 
-func (r *router) add(route string) {
-	r.GET(fmt.Sprintf("/%s", route), func(ctx *gin.Context) {
-		content, err := pkg.ReadMarkdownFile(fmt.Sprintf("cmd/%s.md", route))
+func (r *router) add(route, path string) {
+	r.GET(route, func(ctx *gin.Context) {
+		content, err := pkg.ReadMarkdownFile(path)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, err)
 
@@ -44,8 +43,8 @@ func newRouter() router {
 		}),
 	)
 
-	r.add("home")
-	r.add("resume")
+	r.add("/", "cmd/home.md")
+	r.add("/resume", "cmd/resume.md")
 
 	return r
 }
