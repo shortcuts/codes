@@ -1,0 +1,8 @@
+version: "3.3"
+
+services:
+  codes:
+    image: ghcr.io/shortcuts/codes
+    ports:
+      - '8080:8080'
+

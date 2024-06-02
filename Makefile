@@ -28,7 +28,15 @@ lint: ## Lint Go files
 
 build: ## Builds the service
 	make clean
-	go build -tags=go_json -tags appsec -o .bin/ github.com/shortcuts/codes/cmd
+	CGO_ENABLED=0 GOOS=linux go build -tags=go_json -o .bin/ github.com/shortcuts/codes/cmd
+
+bundle:
+	docker build \
+	  --build-arg version=$$(git rev-parse HEAD) \
+	  -t ghcr.io/shortcuts/codes:latest \
+	  -t ghcr.io/shortcuts/codes:$VERSION \
+	  -f Dockerfile .
+
 
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
