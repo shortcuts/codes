@@ -11,7 +11,7 @@ help: ## Prints help.
 deps: ## Install the repository dependencies (linter, database migration, mocks, etc.).
 	go install -v github.com/incu6us/goimports-reviser/v3@latest
 
-setup:
+setup: ## Cleans and install deps
 	make clean
 	make deps
 
@@ -30,7 +30,7 @@ build: ## Builds the service
 	make clean
 	CGO_ENABLED=0 GOOS=linux go build -tags=go_json -o .bin/ github.com/shortcuts/codes/cmd
 
-bundle:
+bundle: ## Builds the docker image
 	docker build \
 	  --build-arg version=$$(git rev-parse HEAD) \
 	  -t ghcr.io/shortcuts/codes:latest \
