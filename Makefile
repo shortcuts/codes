@@ -9,7 +9,8 @@ help: ## Prints help.
 ##@ Setup
 
 deps: ## Install the repository dependencies (linter, database migration, mocks, etc.).
-	go install -v github.com/incu6us/goimports-reviser/v3@latest
+	go install github.com/incu6us/goimports-reviser/v3@latest
+	go install github.com/air-verse/air@latest
 
 setup: ## Cleans and install deps
 	make clean
@@ -28,7 +29,7 @@ lint: ## Lint Go files
 
 build: ## Builds the service
 	make clean
-	CGO_ENABLED=0 GOOS=linux go build -tags=go_json -o .bin/ github.com/shortcuts/codes/cmd
+	CGO_ENABLED=0 GOOS=linux go build -tags=go_json -o .bin/main github.com/shortcuts/codes/cmd
 
 bundle: ## Builds the docker image
 	docker build \
@@ -41,19 +42,9 @@ bundle: ## Builds the docker image
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
 
-dev: stop ## Runs the service in watch mode
-	@make run &
-	@fswatch -or --event=Updated cmd/ | xargs -n1 -I{} make restart || exit 0
-	make stop
-
-run: ## Run the service
-	go run github.com/shortcuts/codes/cmd
-
-restart: ## Stops then run the service
-	make -j1 stop run &
-
-stop: ## Stops the server started in the background
-	@killall $* &> /dev/null || exit 0
+dev: ## Runs the service in watch mode
+	kill $(lsof -t -i:42069) || true
+	air
 
 test: ## Runs the test suites
 	go test -timeout 30s -race github.com/shortcuts/codes/cmd/...

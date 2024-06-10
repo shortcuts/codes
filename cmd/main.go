@@ -1,82 +1,88 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
-	"os"
-	"os/signal"
-	"time"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-
-	"github.com/shortcuts/codes/cmd/pkg"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/shortcuts/codes/pkg/markdown"
+	"github.com/shortcuts/codes/pkg/template"
+	"golang.org/x/time/rate"
 )
 
-type router struct {
-	*gin.Engine
+type server struct {
+	http   *echo.Echo
+	parser markdown.MarkdownParser
 }
 
-func (r *router) add(route, path string) {
-	r.GET(route, func(ctx *gin.Context) {
-		content, err := pkg.ReadMarkdownFile(path)
-		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, err)
+func (s *server) close() error {
+	if err := s.http.Close(); err != nil {
+		return err
+	}
 
-			return
+	return nil
+}
+
+func newServer() server {
+	s := server{
+		http:   echo.New(),
+		parser: markdown.NewParser(),
+	}
+
+	s.http.Pre(middleware.RemoveTrailingSlash())
+	s.http.Use(
+		middleware.Logger(),
+		middleware.Recover(),
+		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
+			rate.Limit(20),
+		)),
+	)
+
+	s.http.Static("assets", "css")
+	s.http.Static("content", "content")
+
+	s.http.Renderer = template.NewTemplate()
+
+	return s
+}
+
+func (s *server) registerBlock(title string) {
+	s.http.GET(fmt.Sprintf("/content/%s", title), func(c echo.Context) error {
+		content, err := s.parser.ToHTML(fmt.Sprintf("content/%s.md", title))
+		if err != nil {
+			return err
 		}
 
-		ctx.Data(http.StatusOK, "text/html; charset=utf-8", pkg.MarkdownToHTML(content))
+		return c.HTML(http.StatusOK, string(content))
 	})
 }
 
-func newRouter() router {
-	r := router{gin.Default()}
+func (s *server) registerRoute(title string) {
+	route := title
 
-	r.Use(
-		cors.New(cors.Config{
-			AllowMethods:     []string{http.MethodGet},
-			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
-			AllowAllOrigins:  true,
-			AllowCredentials: false,
-			MaxAge:           12 * time.Hour,
-		}),
-	)
+	if route == "home" {
+		route = ""
+	}
 
-	r.add("/", "cmd/home.md")
-	r.add("/resume", "cmd/resume.md")
+	s.registerBlock(title)
 
-	return r
+	s.http.GET(fmt.Sprintf("/%s", route), func(c echo.Context) error {
+		return c.Render(http.StatusOK, "freeform", map[string]any{
+			"Filename": title,
+		})
+	})
 }
 
 func main() {
-	router := newRouter()
+	s := newServer()
+	defer s.close()
 
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: router,
-	}
+	s.registerRoute("home")
+	s.registerRoute("resume")
+	s.registerRoute("links")
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
+	s.registerBlock("navbar")
 
-	go func() {
-		<-quit
-		log.Println("receive interrupt signal")
-		if err := server.Close(); err != nil {
-			log.Fatal("Server Close:", err)
-		}
-	}()
-
-	if err := server.ListenAndServe(); err != nil {
-		if err == http.ErrServerClosed {
-			log.Println("Server closed under request")
-
-			return
-		}
-
-		log.Fatal("Server closed unexpect")
-	}
-
-	log.Println("Server exiting")
+	s.http.Logger.Fatal(s.http.Start("localhost:42069"))
 }

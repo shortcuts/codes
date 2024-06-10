@@ -1,0 +1,8 @@
+body {
+    background-color: #303030;
+    color: lightgrey;
+}
+
+a, a:visited, a:hover, a:active, a:link {
+    color: lightgrey;
+}
