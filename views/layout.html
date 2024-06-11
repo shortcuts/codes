@@ -15,9 +15,9 @@
         <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
     </head>
     <body>
-        <div id="navbar" hx-target="#navbar" hx-get="/views/navbar" hx-swap="innerHTML" hx-trigger="load"></div>
+        <div id="navbar">{{ .Navbar }}</div>
 
-        <div id="content" hx-target="#content" hx-get="views/{{ .Filename }}" hx-swap="innerHTML" hx-trigger="load"></div>
+        <div id="content">{{ .Content }}</div>
     </body>
 </html>
 {{ end }}

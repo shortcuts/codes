@@ -10,7 +10,7 @@ help: ## Prints help.
 
 deps: ## Install the repository dependencies (linter, database migration, mocks, etc.).
 	go install github.com/incu6us/goimports-reviser/v3@latest
-	go install github.com/air-verse/air@latest
+	go install github.com/mitranim/gow@latest
 
 setup: ## Cleans and install deps
 	make clean
@@ -35,16 +35,18 @@ bundle: ## Builds the docker image
 	docker build \
 	  --build-arg version=$$(git rev-parse HEAD) \
 	  -t ghcr.io/shortcuts/codes:latest \
-	  -t ghcr.io/shortcuts/codes:$VERSION \
+	  -t ghcr.io/shortcuts/codes:$$(git rev-parse HEAD) \
 	  -f Dockerfile .
 
 
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
 
-dev: ## Runs the service in watch mode
-	kill $(lsof -t -i:42069) || true
-	air
+dev: stop ## Runs the service in watch mode
+	gow -e=go,mod,html,css,md run cmd/main.go
+
+stop: ## Stops leftover services
+	kill $$(lsof -t -i:42069) || true
 
 test: ## Runs the test suites
-	go test -timeout 30s -race github.com/shortcuts/codes/cmd/...
+	gow test -timeout 30s -race github.com/shortcuts/codes/cmd/...

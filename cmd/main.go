@@ -11,6 +11,8 @@ import (
 	"golang.org/x/time/rate"
 )
 
+var routes = []string{"", "resume", "links"}
+
 type server struct {
 	http   *echo.Echo
 	parser markdown.MarkdownParser
@@ -46,42 +48,43 @@ func newServer() server {
 	return s
 }
 
-func (s *server) registerBlock(title string) {
-	s.http.GET(fmt.Sprintf("/views/%s", title), func(c echo.Context) error {
-		content, err := s.parser.ToHTML(fmt.Sprintf("views/%s.md", title))
-		if err != nil {
-			return err
-		}
+func (s *server) registerRoute(route string) error {
+	title := route
 
-		return c.HTML(http.StatusOK, string(content))
-	})
-}
-
-func (s *server) registerRoute(title string) {
-	route := title
-
-	if route == "home" {
-		route = ""
+	if route == "" {
+		title = "home"
 	}
 
-	s.registerBlock(title)
+	navbar, err := s.parser.ToHTML("views/navbar.md")
+	if err != nil {
+		return err
+	}
+
+	content, err := s.parser.ToHTML(fmt.Sprintf("views/%s.md", title))
+	if err != nil {
+		return err
+	}
 
 	s.http.GET(fmt.Sprintf("/%s", route), func(c echo.Context) error {
 		return c.Render(http.StatusOK, "layout", map[string]any{
 			"Filename": title,
+			"Navbar":   navbar,
+			"Content":  content,
 		})
 	})
+
+	return nil
 }
 
 func main() {
 	s := newServer()
 	defer s.close()
 
-	s.registerRoute("home")
-	s.registerRoute("resume")
-	s.registerRoute("links")
-
-	s.registerBlock("navbar")
+	for _, route := range routes {
+		if err := s.registerRoute(route); err != nil {
+			s.http.Logger.Fatalf("unable to register route %s: %w", err)
+		}
+	}
 
 	s.http.Logger.Fatal(s.http.Start("localhost:42069"))
 }

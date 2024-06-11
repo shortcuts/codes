@@ -2,6 +2,7 @@ package markdown
 
 import (
 	"bytes"
+	"html/template"
 	"os"
 
 	"github.com/yuin/goldmark"
@@ -31,7 +32,7 @@ func NewParser() MarkdownParser {
 	}
 }
 
-func (m *MarkdownParser) ToHTML(path string) ([]byte, error) {
+func (m *MarkdownParser) ToHTML(path string) (*template.HTML, error) {
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -44,5 +45,7 @@ func (m *MarkdownParser) ToHTML(path string) ([]byte, error) {
 		return nil, err
 	}
 
-	return html.Bytes(), nil
+	rawHTML := template.HTML(html.String())
+
+	return &rawHTML, nil
 }

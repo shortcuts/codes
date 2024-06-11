@@ -8,8 +8,6 @@ html * {
 
 body {
     margin: 0;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
 }
 
 a, a:visited, a:link {
@@ -19,7 +17,3 @@ a, a:visited, a:link {
 a:hover, a:active {
     color: #F96815;
 }
-
-#navbar, #content {
-}
-
