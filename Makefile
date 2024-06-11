@@ -29,7 +29,7 @@ lint: ## Lint Go files
 
 build: ## Builds the service
 	make clean
-	CGO_ENABLED=0 GOOS=linux go build -tags=go_json -o .bin/main github.com/shortcuts/codes/cmd
+	cd cmd && ko build .
 
 bundle: ## Builds the docker image
 	docker build \
