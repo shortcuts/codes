@@ -31,14 +31,6 @@ build: ## Builds the service
 	make clean
 	cd cmd && ko build . --bare
 
-bundle: ## Builds the docker image
-	docker build \
-	  --build-arg version=$$(git rev-parse HEAD) \
-	  -t ghcr.io/shortcuts/codes:latest \
-	  -t ghcr.io/shortcuts/codes:$$(git rev-parse HEAD) \
-	  -f Dockerfile .
-
-
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
 
