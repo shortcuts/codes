@@ -48,7 +48,7 @@ jobs:
           args: --verbose
           skip-cache: true
 
-      - run: make test
+      - run: go test -timeout 30s -race github.com/shortcuts/codes/cmd/...
 
   build:
     runs-on: ubuntu-latest
