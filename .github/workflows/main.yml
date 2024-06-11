@@ -72,12 +72,12 @@ jobs:
       - run: make build
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Generate and upload release.yaml
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
           ko resolve -t ${tag} > release.yaml
