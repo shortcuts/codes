@@ -71,6 +71,8 @@ jobs:
 
       - run: make build
         if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate and upload release.yaml
         if: ${{ github.ref == 'refs/heads/main' }}
