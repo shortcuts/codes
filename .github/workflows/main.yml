@@ -69,12 +69,15 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: ko-build/setup-ko@v0.6
 
+      - run: make build
+        if: ${{ github.ref == 'refs/heads/main' }}
+
       - name: Generate and upload release.yaml
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
-          ko resolve -t ${tag} -f config/ > release.yaml
+          ko resolve -t ${tag} > release.yaml
           gh release upload ${tag} release.yaml
   
