@@ -41,8 +41,6 @@ jobs:
 
       - run: go mod verify
 
-      - run: make build
-
       - name: Lint
         uses: golangci/golangci-lint-action@v6
         with:
