@@ -29,7 +29,7 @@ lint: ## Lint Go files
 
 build: ## Builds the service
 	make clean
-	cd cmd && ko build .
+	cd cmd && ko build . --bare
 
 bundle: ## Builds the docker image
 	docker build \
