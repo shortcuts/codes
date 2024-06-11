@@ -1,0 +1,23 @@
+{{ block "layout" . }}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>@shortcuts | Senior Software Engineer</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+
+        <link href="assets/style.css" rel="stylesheet">
+
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
+    </head>
+    <body>
+        <div id="navbar" hx-target="#navbar" hx-get="/views/navbar" hx-swap="innerHTML" hx-trigger="load"></div>
+
+        <div id="content" hx-target="#content" hx-get="views/{{ .Filename }}" hx-swap="innerHTML" hx-trigger="load"></div>
+    </body>
+</html>
+{{ end }}

@@ -1,8 +1,25 @@
+html * {
+  font-family: "Fira Code", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  background-color: #303030;
+  color: lightgrey;
+}
+
 body {
-    background-color: #303030;
+    margin: 0;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+a, a:visited, a:link {
     color: lightgrey;
 }
 
-a, a:visited, a:hover, a:active, a:link {
-    color: lightgrey;
+a:hover, a:active {
+    color: #F96815;
 }
+
+#navbar, #content {
+}
+

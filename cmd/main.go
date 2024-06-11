@@ -30,7 +30,6 @@ func newServer() server {
 		parser: markdown.NewParser(),
 	}
 
-	s.http.Pre(middleware.RemoveTrailingSlash())
 	s.http.Use(
 		middleware.Logger(),
 		middleware.Recover(),
@@ -40,7 +39,7 @@ func newServer() server {
 	)
 
 	s.http.Static("assets", "css")
-	s.http.Static("content", "content")
+	s.http.Static("views", "views")
 
 	s.http.Renderer = template.NewTemplate()
 
@@ -48,8 +47,8 @@ func newServer() server {
 }
 
 func (s *server) registerBlock(title string) {
-	s.http.GET(fmt.Sprintf("/content/%s", title), func(c echo.Context) error {
-		content, err := s.parser.ToHTML(fmt.Sprintf("content/%s.md", title))
+	s.http.GET(fmt.Sprintf("/views/%s", title), func(c echo.Context) error {
+		content, err := s.parser.ToHTML(fmt.Sprintf("views/%s.md", title))
 		if err != nil {
 			return err
 		}
@@ -68,7 +67,7 @@ func (s *server) registerRoute(title string) {
 	s.registerBlock(title)
 
 	s.http.GET(fmt.Sprintf("/%s", route), func(c echo.Context) error {
-		return c.Render(http.StatusOK, "freeform", map[string]any{
+		return c.Render(http.StatusOK, "layout", map[string]any{
 			"Filename": title,
 		})
 	})
