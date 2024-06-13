@@ -1,8 +1,49 @@
 version: "3.3"
 
 services:
+  traefik:
+    image: "traefik:v2.11"
+    container_name: "traefik"
+    restart: unless-stopped
+    mem_limit: 30m
+    command:
+      - "--api.insecure=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=duckdns"
+      - "--certificatesresolvers.myresolver.acme.email=vannicattec@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    environment:
+      - DUCKDNS_TOKEN=6220ac36-c765-4740-9281-9cd535da9dd1
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+     - "default"
+     - "traefik"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.sh0rtcts.duckdns.org`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    mem_limit: 10m
   codes:
     image: ghcr.io/shortcuts/codes
     ports:
-      - '8080:8080'
+      - '42069:42069'
 
+networks:
+  traefik:
+    name: traefik
