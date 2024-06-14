@@ -76,7 +76,7 @@ func newServer() server {
 }
 
 func (s *server) registerRoute(route route) error {
-	content, err := s.parser.ToHTML(fmt.Sprintf("views/%s.md", route.filename))
+	content, err := s.parser.ToHTML(fmt.Sprintf("views/%s", route.filename))
 	if err != nil {
 		return err
 	}
