@@ -1,6 +1,6 @@
-# Resume
+# resume
 
-Hello, my name is Clément Vannicatte, I'm from France.
+Clément Vannicatte, born in France on October 16th, 1994.
 
-- Born in France, October 16th 1994.
-- Husband and father
+- husband and father
+- learning is one of my hobbies

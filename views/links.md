@@ -1,13 +1,13 @@
-# Links
+# links
 
-## Programming
+## programming
 
-- [GitHub](https://github.com/shortcuts)
+- [github](https://github.com/shortcuts)
 - [no-neck-pain.nvim](https://github.com/shortcuts/no-neck-pain.nvim)
 - [neovim-plugin-boilerplate](https://github.com/shortcuts/neovim-plugin-boilerplate)
 
-## Social
+## social
 
-- [LinkedIn](https://www.linkedin.com/in/vannicatte/)
-- [X.com](https://twitter.com/sh0rtcts)
-- [Steam](https://steamcommunity.com/id/KLM_/)
+- [linkedin](https://www.linkedin.com/in/vannicatte/)
+- [x.com](https://twitter.com/sh0rtcts)
+- [steam](https://steamcommunity.com/id/KLM_/)

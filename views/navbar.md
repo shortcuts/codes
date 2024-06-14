@@ -1,3 +1,1 @@
-[Home](/) | [Resume](/resume) | [Links](/links)
-
----
+[home](/) | [resume](/resume) | [links](/links)

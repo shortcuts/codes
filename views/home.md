@@ -1,3 +1,3 @@
-# Home
+# hi
 
-I'm [@shortcuts](https://github.com/shortcuts).
+> I like keyboards and [@shortcuts](https://github.com/shortcuts).

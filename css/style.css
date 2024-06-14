@@ -1,13 +1,31 @@
 html * {
-  font-family: "Fira Code", monospace;
-  font-optical-sizing: auto;
-  font-style: normal;
-  background-color: #303030;
-  color: lightgrey;
+    font-family: "Fira Code", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
+    background-color: #262626;
+    color: lightgrey;
 }
 
 body {
     margin: 0;
+}
+
+blockquote {
+    position: relative;
+    margin: 0 auto;
+    width: 400px;
+    line-height: 28px;
+    padding-left: 40px;
+    border-left: 2px solid #F96815;
+}
+
+#navbar, #content {
+    max-width:30em;
+    margin:0 auto;
+}
+
+#divider {
+    border-top: 1px solid #262626;
 }
 
 a, a:visited, a:link {
