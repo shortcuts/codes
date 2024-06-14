@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/shortcuts/codes/compare/v1.0.1...v1.0.2) (2024-06-14)
+
+
+### Bug Fixes
+
+* duplicated extension ([49fe642](https://github.com/shortcuts/codes/commit/49fe6429eb1be4477bdd6f2afc1449620b225138))
+
 ## [1.0.1](https://github.com/shortcuts/codes/compare/v1.0.0...v1.0.1) (2024-06-14)
 
 
