@@ -81,12 +81,3 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
-      - name: Generate and upload release.yaml
-        if: ${{ steps.release.outputs.release_created }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        run: |
-          tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
-          ko resolve -t ${tag} > release.yaml
-          gh release upload ${tag} release.yaml
