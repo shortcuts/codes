@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/shortcuts/codes/compare/v1.0.0...v1.0.1) (2024-06-14)
+
+
+### Bug Fixes
+
+* build platform ([78d6ec2](https://github.com/shortcuts/codes/commit/78d6ec24fdc0b202f65e421dd6e71c5047ad20ff))
+* remove unused network ([9dafc47](https://github.com/shortcuts/codes/commit/9dafc47da69f19600d3b7d8f2a34b0e108999de0))
+
 ## 1.0.0 (2024-06-14)
 
 
