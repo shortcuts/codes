@@ -29,7 +29,7 @@ lint: ## Lint Go files
 
 build: ## Builds the service
 	make clean
-	cd cmd && ko build . --bare
+	cd cmd && ko build . --bare --platform=linux/arm64
 
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
