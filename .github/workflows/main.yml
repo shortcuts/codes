@@ -51,6 +51,7 @@ jobs:
       - run: go test -timeout 30s github.com/shortcuts/codes/cmd/...
 
   build:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: test
@@ -66,20 +67,24 @@ jobs:
             go.mod
 
       - name: Setup Ko
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses: ko-build/setup-ko@v0.6
 
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          release-type: simple
+          package-name: codes
+
       - run: make build
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Generate and upload release.yaml
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
           ko resolve -t ${tag} > release.yaml
           gh release upload ${tag} release.yaml
-  
