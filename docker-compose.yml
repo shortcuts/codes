@@ -5,7 +5,3 @@ services:
     image: ghcr.io/shortcuts/codes
     ports:
       - '8080:8080'
-
-networks:
-  traefik:
-    name: traefik
