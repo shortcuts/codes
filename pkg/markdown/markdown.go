@@ -28,7 +28,9 @@ func (a *ASTTransformer) Transform(node *ast.Document, reader text.Reader, pc pa
 
 		switch v := n.(type) {
 		case *ast.Link:
-			v.SetAttribute([]byte("target"), "_blank")
+			if string(v.Destination)[0] != '/' {
+				v.SetAttribute([]byte("target"), "_blank")
+			}
 		}
 
 		return ast.WalkContinue, nil
