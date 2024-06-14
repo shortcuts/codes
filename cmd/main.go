@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	gotemplate "html/template"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -11,11 +12,30 @@ import (
 	"golang.org/x/time/rate"
 )
 
-var routes = []string{"", "resume", "links"}
+type route struct {
+	path     string
+	filename string
+}
+
+var routes = []route{
+	{
+		path:     "",
+		filename: "home.md",
+	},
+	{
+		path:     "resume",
+		filename: "resume.md",
+	},
+	{
+		path:     "links",
+		filename: "links.md",
+	},
+}
 
 type server struct {
 	http   *echo.Echo
 	parser markdown.MarkdownParser
+	navbar *gotemplate.HTML
 }
 
 func (s *server) close() error {
@@ -31,6 +51,13 @@ func newServer() server {
 		http:   echo.New(),
 		parser: markdown.NewParser(),
 	}
+
+	navbar, err := s.parser.ToHTML("views/navbar.md")
+	if err != nil {
+		panic(err)
+	}
+
+	s.navbar = navbar
 
 	s.http.Use(
 		middleware.Logger(),
@@ -48,27 +75,16 @@ func newServer() server {
 	return s
 }
 
-func (s *server) registerRoute(route string) error {
-	title := route
-
-	if route == "" {
-		title = "home"
-	}
-
-	navbar, err := s.parser.ToHTML("views/navbar.md")
+func (s *server) registerRoute(route route) error {
+	content, err := s.parser.ToHTML(fmt.Sprintf("views/%s.md", route.filename))
 	if err != nil {
 		return err
 	}
 
-	content, err := s.parser.ToHTML(fmt.Sprintf("views/%s.md", title))
-	if err != nil {
-		return err
-	}
-
-	s.http.GET(fmt.Sprintf("/%s", route), func(c echo.Context) error {
+	s.http.GET(fmt.Sprintf("/%s", route.path), func(c echo.Context) error {
 		return c.Render(http.StatusOK, "layout", map[string]any{
-			"Filename": title,
-			"Navbar":   navbar,
+			"Filename": route.filename,
+			"Navbar":   s.navbar,
 			"Content":  content,
 		})
 	})
