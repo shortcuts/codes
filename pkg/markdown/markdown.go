@@ -6,13 +6,33 @@ import (
 	"os"
 
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/text"
+	"github.com/yuin/goldmark/util"
 )
 
 type MarkdownParser struct {
 	goldmark.Markdown
+}
+
+type ASTTransformer struct{}
+
+func (a *ASTTransformer) Transform(node *ast.Document, reader text.Reader, pc parser.Context) {
+	_ = ast.Walk(node, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
+		if !entering {
+			return ast.WalkContinue, nil
+		}
+
+		switch v := n.(type) {
+		case *ast.Link:
+			v.SetAttribute([]byte("target"), "_blank")
+		}
+
+		return ast.WalkContinue, nil
+	})
 }
 
 func NewParser() MarkdownParser {
@@ -24,6 +44,7 @@ func NewParser() MarkdownParser {
 			),
 			goldmark.WithParserOptions(
 				parser.WithAutoHeadingID(),
+				parser.WithASTTransformers(util.Prioritized(&ASTTransformer{}, 42)),
 			),
 			goldmark.WithRendererOptions(
 				html.WithHardWraps(),

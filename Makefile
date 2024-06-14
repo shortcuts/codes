@@ -38,7 +38,7 @@ dev: stop ## Runs the service in watch mode
 	gow -e=go,mod,html,css,md run cmd/main.go
 
 stop: ## Stops leftover services
-	kill $$(lsof -t -i:42069) || true
+	kill $$(lsof -t -i:8080) || true
 
 test: ## Runs the test suites
 	gow test -timeout 30s -race github.com/shortcuts/codes/cmd/...

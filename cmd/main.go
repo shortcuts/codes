@@ -86,5 +86,5 @@ func main() {
 		}
 	}
 
-	s.http.Logger.Fatal(s.http.Start("localhost:42069"))
+	s.http.Logger.Fatal(s.http.Start("localhost:8080"))
 }

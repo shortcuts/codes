@@ -9,5 +9,5 @@
 ## Social
 
 - [LinkedIn](https://www.linkedin.com/in/vannicatte/)
-- [X](https://twitter.com/sh0rtcts)
+- [X.com](https://twitter.com/sh0rtcts)
 - [Steam](https://steamcommunity.com/id/KLM_/)
