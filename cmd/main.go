@@ -50,20 +50,6 @@ func (s *server) close() error {
 	return nil
 }
 
-func errorHandler(err error, c echo.Context) {
-	code := http.StatusInternalServerError
-	if he, ok := err.(*echo.HTTPError); ok {
-		code = he.Code
-	}
-
-	c.Logger().Error(err)
-
-	errorPage := fmt.Sprintf("%d.html", code)
-	if err := c.File(errorPage); err != nil {
-		c.Logger().Error(err)
-	}
-}
-
 func newServer() server {
 	e := echo.New()
 
@@ -76,8 +62,6 @@ func newServer() server {
 	)
 
 	e.StaticFS("assets", views)
-
-	e.HTTPErrorHandler = errorHandler
 
 	e.Renderer = template.NewTemplate(&views)
 
