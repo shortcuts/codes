@@ -33,7 +33,7 @@ var routes = []route{
 	},
 }
 
-//go:embed views/*.md views/*.html
+//go:embed views/*.md views/*.html css/*.css
 var views embed.FS
 
 type server struct {
@@ -75,8 +75,7 @@ func newServer() server {
 		)),
 	)
 
-	e.Static("assets", "cmd/css")
-	e.Static("views", "cmd/views")
+	e.StaticFS("assets", views)
 
 	e.HTTPErrorHandler = errorHandler
 
