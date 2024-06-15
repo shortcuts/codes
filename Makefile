@@ -43,7 +43,7 @@ start: stop build ## Stops everything, build for prod, starts the image
 	docker compose up -d
 
 stop: ## Stops leftover services
-	kill $$(lsof -t -i:8080) || true
+	kill $$(lsof -t -i:1313) || true
 
 test: ## Runs the test suites
 	gow test -timeout 30s -race github.com/shortcuts/codes/cmd/...

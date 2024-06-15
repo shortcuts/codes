@@ -15,6 +15,6 @@ RUN go mod download
 
 RUN make build
 
-EXPOSE 8080
+EXPOSE 1313
 
 CMD [".bin/cmd"]
