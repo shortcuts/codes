@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/shortcuts/codes/compare/v1.1.1...v1.1.2) (2024-06-15)
+
+
+### Bug Fixes
+
+* conflicting ports with traefik ([2b07e2c](https://github.com/shortcuts/codes/commit/2b07e2c945da9151cee702bafae64cecd7015b61))
+
 ## [1.1.1](https://github.com/shortcuts/codes/compare/v1.1.0...v1.1.1) (2024-06-15)
 
 
