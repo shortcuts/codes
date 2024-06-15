@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	gotemplate "html/template"
 	"net/http"
@@ -32,9 +33,12 @@ var routes = []route{
 	},
 }
 
+//go:embed views/*.md views/*.html
+var views embed.FS
+
 type server struct {
 	http   *echo.Echo
-	parser markdown.MarkdownParser
+	parser *markdown.MarkdownParser
 	navbar *gotemplate.HTML
 }
 
@@ -47,19 +51,11 @@ func (s *server) close() error {
 }
 
 func newServer() server {
-	s := server{
-		http:   echo.New(),
-		parser: markdown.NewParser(),
-	}
+	parser := markdown.NewParser(&views)
 
-	navbar, err := s.parser.ToHTML("views/navbar.md")
-	if err != nil {
-		panic(err)
-	}
+	e := echo.New()
 
-	s.navbar = navbar
-
-	s.http.Use(
+	e.Use(
 		middleware.Logger(),
 		middleware.Recover(),
 		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
@@ -67,12 +63,21 @@ func newServer() server {
 		)),
 	)
 
-	s.http.Static("assets", "css")
-	s.http.Static("views", "views")
+	e.Static("assets", "cmd/css")
+	e.Static("views", "cmd/views")
 
-	s.http.Renderer = template.NewTemplate()
+	e.Renderer = template.NewTemplate(&views)
 
-	return s
+	navbar, err := parser.ToHTML("views/navbar.md")
+	if err != nil {
+		panic(err)
+	}
+
+	return server{
+		http:   echo.New(),
+		parser: &parser,
+		navbar: navbar,
+	}
 }
 
 func (s *server) registerRoute(route route) error {

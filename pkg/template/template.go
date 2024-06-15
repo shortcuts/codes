@@ -1,6 +1,7 @@
 package template
 
 import (
+	"embed"
 	"html/template"
 	"io"
 
@@ -15,6 +16,6 @@ func (t *Template) Render(w io.Writer, name string, data any, c echo.Context) er
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
-func NewTemplate() *Template {
-	return &Template{templates: template.Must(template.ParseGlob("views/*.html"))}
+func NewTemplate(views *embed.FS) *Template {
+	return &Template{templates: template.Must(template.ParseFS(views, "views/*.html"))}
 }

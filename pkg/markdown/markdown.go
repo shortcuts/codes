@@ -2,8 +2,8 @@ package markdown
 
 import (
 	"bytes"
+	"embed"
 	"html/template"
-	"os"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
@@ -15,7 +15,8 @@ import (
 )
 
 type MarkdownParser struct {
-	goldmark.Markdown
+	parser goldmark.Markdown
+	views  *embed.FS
 }
 
 type ASTTransformer struct{}
@@ -37,9 +38,9 @@ func (a *ASTTransformer) Transform(node *ast.Document, reader text.Reader, pc pa
 	})
 }
 
-func NewParser() MarkdownParser {
+func NewParser(views *embed.FS) MarkdownParser {
 	return MarkdownParser{
-		goldmark.New(
+		parser: goldmark.New(
 			goldmark.WithExtensions(
 				extension.GFM,
 				extension.Typographer,
@@ -52,18 +53,19 @@ func NewParser() MarkdownParser {
 				html.WithHardWraps(),
 			),
 		),
+		views: views,
 	}
 }
 
 func (m *MarkdownParser) ToHTML(path string) (*template.HTML, error) {
-	content, err := os.ReadFile(path)
+	content, err := m.views.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
 	var html bytes.Buffer
 
-	err = m.Convert(content, &html)
+	err = m.parser.Convert(content, &html)
 	if err != nil {
 		return nil, err
 	}
