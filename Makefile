@@ -28,18 +28,19 @@ lint: ## Lint Go files
 ##@ Development
 
 build: ## Builds the service
-	make clean
 	cd cmd && ko build . --bare --platform=linux/arm64
 
 clean: ## Cleans the bin folder.
 	rm -r .bin/ || true
+	docker container stop codes || true
+	docker container rm codes || true
 	docker image rm -f $$(docker image ls ko.local -q) || true
 
 dev: stop ## Runs the service in watch mode
 	gow -e=go,mod,html,css,md run cmd/main.go
 
 start: stop build ## Stops everything, build for prod, starts the image
-	docker run ko.local:latest
+	docker compose up -d
 
 stop: ## Stops leftover services
 	kill $$(lsof -t -i:8080) || true

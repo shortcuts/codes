@@ -2,6 +2,7 @@ version: "3.3"
 
 services:
   codes:
-    image: ghcr.io/shortcuts/codes
+    container_name: codes
+    image: ko.local:latest
     ports:
       - '8080:8080'

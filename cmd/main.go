@@ -50,9 +50,21 @@ func (s *server) close() error {
 	return nil
 }
 
-func newServer() server {
-	parser := markdown.NewParser(&views)
+func errorHandler(err error, c echo.Context) {
+	code := http.StatusInternalServerError
+	if he, ok := err.(*echo.HTTPError); ok {
+		code = he.Code
+	}
 
+	c.Logger().Error(err)
+
+	errorPage := fmt.Sprintf("%d.html", code)
+	if err := c.File(errorPage); err != nil {
+		c.Logger().Error(err)
+	}
+}
+
+func newServer() server {
 	e := echo.New()
 
 	e.Use(
@@ -66,7 +78,11 @@ func newServer() server {
 	e.Static("assets", "cmd/css")
 	e.Static("views", "cmd/views")
 
+	e.HTTPErrorHandler = errorHandler
+
 	e.Renderer = template.NewTemplate(&views)
+
+	parser := markdown.NewParser(&views)
 
 	navbar, err := parser.ToHTML("views/navbar.md")
 	if err != nil {
@@ -74,7 +90,7 @@ func newServer() server {
 	}
 
 	return server{
-		http:   echo.New(),
+		http:   e,
 		parser: &parser,
 		navbar: navbar,
 	}
@@ -107,5 +123,5 @@ func main() {
 		}
 	}
 
-	s.http.Logger.Fatal(s.http.Start("localhost:8080"))
+	s.http.Logger.Fatal(s.http.Start(":8080"))
 }
