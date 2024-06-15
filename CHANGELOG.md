@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/shortcuts/codes/compare/v1.1.0...v1.1.1) (2024-06-15)
+
+
+### Bug Fixes
+
+* **css:** correct path with views ([d209878](https://github.com/shortcuts/codes/commit/d209878c517f4a2b12661e9be06f6ac02a206dd5))
+
 ## [1.1.0](https://github.com/shortcuts/codes/compare/v1.0.2...v1.1.0) (2024-06-15)
 
 
