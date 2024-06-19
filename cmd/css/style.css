@@ -35,3 +35,10 @@ a, a:visited, a:link {
 a:hover, a:active {
     color: #F96815;
 }
+
+@media screen and (max-width: 580px) {
+    #navbar, #content {
+        max-width:100%;
+        margin: 0 10px 0 10px;
+    }
+}

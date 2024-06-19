@@ -33,7 +33,7 @@ var routes = []route{
 	},
 }
 
-//go:embed views/*.md views/*.html css/*.css
+//go:embed views/*.md views/*.html css/*.css img/*.png img/favicon.ico img/site.webmanifest
 var views embed.FS
 
 type server struct {
