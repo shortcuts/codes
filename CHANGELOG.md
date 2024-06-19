@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/shortcuts/codes/compare/v1.1.2...v1.2.0) (2024-06-19)
+
+
+### Features
+
+* favicon et mobile view ([8159818](https://github.com/shortcuts/codes/commit/8159818f729cadb44c73ee0965cefcbad4e4605b))
+
 ## [1.1.2](https://github.com/shortcuts/codes/compare/v1.1.1...v1.1.2) (2024-06-15)
 
 
