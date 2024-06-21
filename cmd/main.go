@@ -70,8 +70,6 @@ func newServer() server {
 		)),
 	)
 
-	e.RouteNotFound("/*", func(c echo.Context) error { return c.NoContent(http.StatusNotFound) })
-
 	e.StaticFS("assets", views)
 
 	e.Renderer = template.NewTemplate(&views)
