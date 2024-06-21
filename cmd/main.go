@@ -5,6 +5,7 @@ import (
 	"fmt"
 	gotemplate "html/template"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -54,12 +55,22 @@ func newServer() server {
 	e := echo.New()
 
 	e.Use(
-		middleware.Logger(),
+		middleware.LoggerWithConfig(middleware.LoggerConfig{
+			Skipper: func(c echo.Context) bool {
+				return c.Response().Status == http.StatusNotFound || c.Response().Status == http.StatusTooManyRequests
+			},
+		}),
 		middleware.Recover(),
+		middleware.TimeoutWithConfig(middleware.TimeoutConfig{
+			Skipper: middleware.DefaultSkipper,
+			Timeout: 1 * time.Second,
+		}),
 		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
 			rate.Limit(20),
 		)),
 	)
+
+	e.RouteNotFound("/*", func(c echo.Context) error { return c.NoContent(http.StatusNotFound) })
 
 	e.StaticFS("assets", views)
 
