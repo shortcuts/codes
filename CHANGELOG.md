@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/shortcuts/codes/compare/v1.2.0...v1.3.0) (2024-10-12)
+
+
+### Features
+
+* add cache and update resume content ([85a0086](https://github.com/shortcuts/codes/commit/85a0086d624c903c21e4a2a58b97f140ecd02b9b))
+* add cache and update resume content ([#10](https://github.com/shortcuts/codes/issues/10)) ([8ab1083](https://github.com/shortcuts/codes/commit/8ab1083ab9d69d23e1a4805e19fe1472f49fdd45))
+
 ## [1.2.0](https://github.com/shortcuts/codes/compare/v1.1.2...v1.2.0) (2024-06-19)
 
 ### Features
