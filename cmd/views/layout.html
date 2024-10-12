@@ -1,30 +1,33 @@
 {{ block "layout" . }}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <title>@shortcuts | Senior Software Engineer</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title>@shortcuts | Senior Software Engineer</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
-        <link rel="manifest" href="assets/img/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png" />
+    <link rel="manifest" href="/assets/img/site.webmanifest" />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet" />
 
-        <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet" />
 
-        <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
-    </head>
-    <body>
-        <div id="navbar">{{ .Navbar }}</div>
+    <script src="/assets/scripts/htmx.min.js"></script>
+    <script src="/assets/scripts/htmx.ext.preload.js"></script>
+  </head>
+  <body hx-ext="preload">
+    <div id="header">
+      <nav>
+        <a href="/" preload>HOME</a> | <a href="/resume" preload>RESUME</a> | <a href="/links" preload>LINKS</a>
+      </nav>
+    </div>
 
-        <hr id="divider" />
-
-        <div id="content">{{ .Content }}</div>
-    </body>
+    <div hx-boost="true" id="content">{{ .Content }}</div>
+  </body>
 </html>
 {{ end }}

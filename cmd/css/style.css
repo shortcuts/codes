@@ -1,44 +1,60 @@
-html * {
-    font-family: "Fira Code", monospace;
-    font-optical-sizing: auto;
-    font-style: normal;
-    background-color: #262626;
-    color: lightgrey;
+html {
+  font-family: 'Fira Code', monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  background-color: #191919;
+  color: lightgrey;
 }
 
-body {
-    margin: 0;
+img {
+  width: 100%;
+}
+
+a,
+a:visited,
+a:link {
+  color: lightgrey;
+}
+
+a:hover,
+a:active {
+  color: #f96815;
+}
+
+li {
+  line-height: 30px;
 }
 
 blockquote {
-    position: relative;
-    margin: 0 auto;
-    width: 400px;
-    line-height: 28px;
-    padding-left: 40px;
-    border-left: 2px solid #F96815;
+  margin-left: 20px;
+  line-height: 28px;
+  padding-left: 20px;
+  border-left: 2px solid #f96815;
 }
 
-#navbar, #content {
-    max-width:30em;
-    margin:0 auto;
+#header {
+  position: sticky;
+  top: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #171717;
+  border-bottom: 1px solid #f96815;
+
+  nav {
+    background-color: #171717;
+  }
 }
 
-#divider {
-    border-top: 1px solid #262626;
-}
-
-a, a:visited, a:link {
-    color: lightgrey;
-}
-
-a:hover, a:active {
-    color: #F96815;
+#header > nav,
+#content {
+  max-width: 50em;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 580px) {
-    #navbar, #content {
-        max-width:100%;
-        margin: 0 10px 0 10px;
-    }
+  #header,
+  #content {
+    max-width: 100%;
+    margin: 0 10px 0 10px;
+  }
 }

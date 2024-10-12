@@ -24,6 +24,7 @@ lint: ## Lint Go files
 		-project-name github.com/shortcuts/codes \
 		./...
 	golangci-lint run --fix
+	prettier --write .
 
 ##@ Development
 
@@ -37,7 +38,7 @@ clean: ## Cleans the bin folder.
 	docker image rm -f $$(docker image ls ko.local -q) || true
 
 dev: stop ## Runs the service in watch mode
-	gow -e=go,mod,html,css,md run cmd/main.go
+	gow -e=go,mod,html,css,md,js run cmd/main.go
 
 start: stop build ## Stops everything, build for prod, starts the image
 	docker compose up -d

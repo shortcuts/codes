@@ -3,14 +3,17 @@ package main
 import (
 	"embed"
 	"fmt"
-	gotemplate "html/template"
 	"net/http"
 
+	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
+	"github.com/kelseyhightower/envconfig"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/time/rate"
+
 	"github.com/shortcuts/codes/pkg/markdown"
 	"github.com/shortcuts/codes/pkg/template"
-	"golang.org/x/time/rate"
 )
 
 type route struct {
@@ -33,50 +36,64 @@ var routes = []route{
 	},
 }
 
-//go:embed views/*.md views/*.html css/*.css img/*.png img/favicon.ico img/site.webmanifest
+//go:embed views/*.md views/*.html scripts/*.js css/*.css img/*.png img/*.jpg img/favicon.ico img/site.webmanifest
 var views embed.FS
 
 type server struct {
-	http   *echo.Echo
-	parser *markdown.MarkdownParser
-	navbar *gotemplate.HTML
+	router       *echo.Echo
+	parser       markdown.MarkdownParser
+	lastModified string `envconfig:"LAST_MODIFIED" required:"false"`
 }
 
 func (s *server) close() error {
-	if err := s.http.Close(); err != nil {
+	if err := s.router.Close(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func newServer() server {
-	e := echo.New()
+func newServer() *server {
+	err := godotenv.Load("cmd/.env")
+	if err != nil {
+		panic(err)
+	}
 
-	e.Use(
+	server := &server{}
+
+	err = envconfig.Process("", server)
+	if err != nil {
+		panic(err)
+	}
+
+	server.router = echo.New()
+
+	server.router.Use(
 		middleware.Logger(),
 		middleware.Recover(),
+		middleware.RemoveTrailingSlash(),
 		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
 			rate.Limit(20),
 		)),
 	)
 
-	e.StaticFS("assets", views)
+	server.router.StaticFS("/assets", views)
 
-	e.Renderer = template.NewTemplate(&views)
+	server.router.Renderer = template.NewTemplate(&views)
 
-	parser := markdown.NewParser(&views)
+	server.parser = markdown.NewParser(&views)
 
-	navbar, err := parser.ToHTML("views/navbar.md")
+	content, err := server.parser.ToHTML("views/404.md")
 	if err != nil {
 		panic(err)
 	}
 
-	return server{
-		http:   e,
-		parser: &parser,
-		navbar: navbar,
-	}
+	server.router.RouteNotFound("*", func(c echo.Context) error {
+		c.Response().Header().Add("Last-Modified", server.lastModified)
+		return c.Render(http.StatusOK, "layout", map[string]any{"Content": content})
+	})
+
+	return server
 }
 
 func (s *server) registerRoute(route route) error {
@@ -85,12 +102,9 @@ func (s *server) registerRoute(route route) error {
 		return err
 	}
 
-	s.http.GET(fmt.Sprintf("/%s", route.path), func(c echo.Context) error {
-		return c.Render(http.StatusOK, "layout", map[string]any{
-			"Filename": route.filename,
-			"Navbar":   s.navbar,
-			"Content":  content,
-		})
+	s.router.GET(fmt.Sprintf("/%s", route.path), func(c echo.Context) error {
+		c.Response().Header().Add("Last-Modified", s.lastModified)
+		return c.Render(http.StatusOK, "layout", map[string]any{"Content": content})
 	})
 
 	return nil
@@ -102,9 +116,9 @@ func main() {
 
 	for _, route := range routes {
 		if err := s.registerRoute(route); err != nil {
-			s.http.Logger.Fatalf("unable to register route %s: %w", err)
+			s.router.Logger.Fatalf("unable to register route %s: %w", err)
 		}
 	}
 
-	s.http.Logger.Fatal(s.http.Start(":1313"))
+	s.router.Logger.Fatal(s.router.Start("localhost:1313"))
 }
