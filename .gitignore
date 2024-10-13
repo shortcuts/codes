@@ -9,7 +9,6 @@
 *.test
 
 # local env files for testing
-.env
 .env.local
 .env.*.local
 
