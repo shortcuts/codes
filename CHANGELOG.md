@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/shortcuts/codes/compare/v1.3.1...v1.4.0) (2024-10-13)
+
+
+### Features
+
+* use zap ([d50f97b](https://github.com/shortcuts/codes/commit/d50f97b567a92b109d60bb46a5aa0e11db1c2feb))
+
 ## [1.3.1](https://github.com/shortcuts/codes/compare/v1.3.0...v1.3.1) (2024-10-13)
 
 
