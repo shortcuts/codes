@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/shortcuts/codes/compare/v1.3.0...v1.3.1) (2024-10-13)
+
+
+### Bug Fixes
+
+* env isn't private ([abba145](https://github.com/shortcuts/codes/commit/abba145246905a39ed7ddc1df3082a805105c352))
+
 ## [1.3.0](https://github.com/shortcuts/codes/compare/v1.2.0...v1.3.0) (2024-10-12)
 
 
