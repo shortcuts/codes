@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/shortcuts/codes/compare/v1.4.0...v1.4.1) (2024-10-13)
+
+
+### Bug Fixes
+
+* use variable in struct directly ([dcf7a5b](https://github.com/shortcuts/codes/commit/dcf7a5bb86b4777fd2f557defa8b42c839920879))
+
 ## [1.4.0](https://github.com/shortcuts/codes/compare/v1.3.1...v1.4.0) (2024-10-13)
 
 ### Features
