@@ -4,12 +4,14 @@ import (
 	"embed"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"go.uber.org/zap"
 	"golang.org/x/time/rate"
 
 	"github.com/shortcuts/codes/pkg/markdown"
@@ -69,13 +71,33 @@ func newServer() *server {
 	server.router = echo.New()
 
 	server.router.Use(
-		middleware.Logger(),
 		middleware.Recover(),
 		middleware.RemoveTrailingSlash(),
 		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
 			rate.Limit(20),
 		)),
 	)
+
+	logger, _ := zap.NewProduction()
+	server.router.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		LogStatus:   true,
+		LogURI:      true,
+		LogError:    true,
+		HandleError: true,
+		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			if v.Status == http.StatusNotFound || v.Status == http.StatusTooManyRequests {
+				return nil
+			}
+
+			if strings.Contains(v.URI, "assets") {
+				return nil
+			}
+
+			logger.Info("request", zap.String("URI", v.URI), zap.Int("status", v.Status))
+
+			return nil
+		},
+	}))
 
 	server.router.StaticFS("/assets", views)
 
