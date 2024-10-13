@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -132,5 +133,11 @@ func main() {
 		}
 	}
 
-	s.router.Logger.Fatal(s.router.Start("localhost:1313"))
+	baseRoute := ""
+
+	if os.Getenv("DEV") != "" {
+		baseRoute = "localhost"
+	}
+
+	s.router.Logger.Fatal(s.router.Start(baseRoute + ":1313"))
 }
