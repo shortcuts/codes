@@ -6,9 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/kelseyhightower/envconfig"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
@@ -56,16 +54,8 @@ func (s *server) close() error {
 }
 
 func newServer() *server {
-	err := godotenv.Load("cmd/.env")
-	if err != nil {
-		panic(err)
-	}
-
-	server := &server{}
-
-	err = envconfig.Process("", server)
-	if err != nil {
-		panic(err)
+	server := &server{
+		lastModified: "Sat, 12 Oct 2024 07:28:00 GMT",
 	}
 
 	server.router = echo.New()
