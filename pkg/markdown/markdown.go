@@ -51,6 +51,7 @@ func NewParser(views *embed.FS) MarkdownParser {
 			),
 			goldmark.WithRendererOptions(
 				html.WithHardWraps(),
+				html.WithUnsafe(),
 			),
 		),
 		views: views,
