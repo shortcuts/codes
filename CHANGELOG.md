@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/shortcuts/codes/compare/v1.4.2...v1.5.0) (2025-07-01)
+
+
+### Features
+
+* resume update ([#16](https://github.com/shortcuts/codes/issues/16)) ([a6957f9](https://github.com/shortcuts/codes/commit/a6957f9ce2ad004e75f357223d6cc2adfb719299))
+
 ## [1.4.2](https://github.com/shortcuts/codes/compare/v1.4.1...v1.4.2) (2024-10-13)
 
 ### Bug Fixes
