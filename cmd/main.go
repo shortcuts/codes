@@ -2,11 +2,15 @@ package main
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
+	"github.com/jellydator/ttlcache/v3"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -17,15 +21,30 @@ import (
 	"github.com/shortcuts/codes/pkg/template"
 )
 
+type enrichWithURL struct {
+	// url to fetch content from
+	url string
+	// name to use in the template
+	name string
+}
+
 type route struct {
 	path     string
 	filename string
+	// enrichWithURLs is a list of URLs to fetch content from and load it inside the template.
+	enrichWithURLs []enrichWithURL
 }
 
 var routes = []route{
 	{
 		path:     "",
 		filename: "home.md",
+		enrichWithURLs: []enrichWithURL{
+			{
+				url:  "https://www.duolingo.com/2017-06-30/users?username=sh0rtcts",
+				name: "Duolingo",
+			},
+		},
 	},
 	{
 		path:     "resume",
@@ -41,22 +60,29 @@ var routes = []route{
 var views embed.FS
 
 type server struct {
-	router       *echo.Echo
+	isLocal      bool
+	cacheClient  *ttlcache.Cache[string, []byte]
+	httpClient   *http.Client
+	lastModified string
+	logger       *zap.Logger
 	parser       markdown.MarkdownParser
-	lastModified string `envconfig:"LAST_MODIFIED" required:"false"`
+	router       *echo.Echo
 }
 
-func (s *server) close() error {
+func (s *server) close() {
 	if err := s.router.Close(); err != nil {
-		return err
+		s.logger.Error("error while closing router", zap.Error(err))
 	}
-
-	return nil
 }
 
 func newServer() *server {
+	cacheClient := ttlcache.New(ttlcache.WithTTL[string, []byte](24*time.Hour), ttlcache.WithDisableTouchOnHit[string, []byte](), ttlcache.WithCapacity[string, []byte](1024*1024*10))
+
 	server := &server{
-		lastModified: "Sat, 12 Oct 2024 07:28:00 GMT",
+		isLocal:      os.Getenv("DEV") != "",
+		lastModified: time.Now().Format(time.RFC1123),
+		httpClient:   &http.Client{Timeout: 1 * time.Second},
+		cacheClient:  cacheClient,
 	}
 
 	server.router = echo.New()
@@ -69,7 +95,18 @@ func newServer() *server {
 		)),
 	)
 
-	logger, _ := zap.NewProduction()
+	var err error
+
+	if server.isLocal {
+		server.logger, err = zap.NewDevelopment()
+	} else {
+		server.logger, err = zap.NewProduction()
+	}
+
+	if err != nil {
+		panic(fmt.Sprintf("unable to create logger: %s", err))
+	}
+
 	server.router.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
 		LogStatus:   true,
 		LogURI:      true,
@@ -84,7 +121,7 @@ func newServer() *server {
 				return nil
 			}
 
-			logger.Info("request", zap.String("URI", v.URI), zap.Int("status", v.Status))
+			server.logger.Info("request", zap.String("URI", v.URI), zap.Int("status", v.Status))
 
 			return nil
 		},
@@ -116,8 +153,50 @@ func (s *server) registerRoute(route route) error {
 	}
 
 	s.router.GET(fmt.Sprintf("/%s", route.path), func(c echo.Context) error {
+		data := map[string]any{"Content": content}
+
+		if s.isLocal && len(route.enrichWithURLs) > 0 {
+			for _, enrichWithURL := range route.enrichWithURLs {
+				cachedContent := s.cacheClient.Get(enrichWithURL.url)
+
+				if cachedContent == nil {
+					resp, err := s.httpClient.Get(enrichWithURL.url)
+					if err != nil {
+						s.logger.Error("error while fetching enrich URL", zap.String("route", route.path), zap.String("url", enrichWithURL.url), zap.Error(err))
+
+						continue
+					}
+					defer resp.Body.Close() // nolint: errcheck
+
+					rawContent, err := io.ReadAll(resp.Body)
+					if err != nil {
+						s.logger.Error("error while reading response body", zap.String("route", route.path), zap.String("url", enrichWithURL.url), zap.Error(err))
+
+						continue
+					}
+
+					s.logger.Debug("content fetched", zap.String("route", route.path), zap.String("url", enrichWithURL.url))
+
+					cachedContent = s.cacheClient.Set(enrichWithURL.url, rawContent, ttlcache.DefaultTTL)
+				} else {
+					s.logger.Debug("content retrieved from cache", zap.String("route", route.path), zap.String("url", enrichWithURL.url))
+				}
+
+				var content map[string]any
+
+				err = json.Unmarshal(cachedContent.Value(), &content)
+				if err != nil {
+					s.logger.Error("error while unmarshalling response body", zap.String("route", route.path), zap.String("url", enrichWithURL.url), zap.Error(err))
+
+					continue
+				}
+
+				data[enrichWithURL.name] = content
+			}
+		}
+
 		c.Response().Header().Add("Last-Modified", s.lastModified)
-		return c.Render(http.StatusOK, "layout", map[string]any{"Content": content})
+		return c.Render(http.StatusOK, "layout", data)
 	})
 
 	return nil
@@ -129,15 +208,18 @@ func main() {
 
 	for _, route := range routes {
 		if err := s.registerRoute(route); err != nil {
-			s.router.Logger.Fatalf("unable to register route %s: %w", err)
+			s.logger.Fatal(fmt.Sprintf("unable to register route %s: %s", route.path, err.Error()))
 		}
 	}
 
 	baseRoute := ""
 
-	if os.Getenv("DEV") != "" {
+	if s.isLocal {
 		baseRoute = "localhost"
 	}
 
-	s.router.Logger.Fatal(s.router.Start(baseRoute + ":1313"))
+	err := s.router.Start(baseRoute + ":1313")
+	if err != nil {
+		s.logger.Fatal(err.Error())
+	}
 }

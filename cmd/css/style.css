@@ -32,6 +32,15 @@ blockquote {
   border-left: 2px solid #f96815;
 }
 
+details {
+  summary {
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  margin-left: 20px;
+}
+
 #header {
   position: sticky;
   top: 0;
@@ -47,7 +56,7 @@ blockquote {
 
 #header > nav,
 #content {
-  max-width: 50em;
+  max-width: 60em;
   margin: 0 auto;
 }
 

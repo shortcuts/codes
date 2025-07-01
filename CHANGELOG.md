@@ -2,10 +2,9 @@
 
 ## [1.4.2](https://github.com/shortcuts/codes/compare/v1.4.1...v1.4.2) (2024-10-13)
 
-
 ### Bug Fixes
 
-* determine base route on env ([175d0f1](https://github.com/shortcuts/codes/commit/175d0f18c218bf384a55f18e2e450c3be0d2ca04))
+- determine base route on env ([175d0f1](https://github.com/shortcuts/codes/commit/175d0f18c218bf384a55f18e2e450c3be0d2ca04))
 
 ## [1.4.1](https://github.com/shortcuts/codes/compare/v1.4.0...v1.4.1) (2024-10-13)
 
