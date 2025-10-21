@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/shortcuts/codes/compare/v1.5.0...v1.6.0) (2025-10-21)
+
+
+### Features
+
+* new dark and light themes ([18edaff](https://github.com/shortcuts/codes/commit/18edafff508a3fa78b33fc354863b27b5117c8f2))
+
 ## [1.5.0](https://github.com/shortcuts/codes/compare/v1.4.2...v1.5.0) (2025-07-01)
 
 ### Features
