@@ -1,9 +1,24 @@
+/* https://coolors.co/503b31-654a3e-ffe6a7-ede0d4-191310-251c18-ffe6a7-f2eae2 */
+:root {
+  --light-bg-color: #503b31;
+  --light-contrast-bg-color: #654a3e;
+  --light-accent-color: #ffe6a7;
+  --light-text-color: #ede0d4;
+
+  --dark-bg-color: #191310;
+  --dark-contrast-bg-color: #251c18;
+  --dark-accent-color: #ffe6a7;
+  --dark-text-color: #ede0d4;
+
+  color-scheme: dark light;
+}
+
 html {
   font-family: 'Fira Code', monospace;
   font-optical-sizing: auto;
   font-style: normal;
-  background-color: #191919;
-  color: lightgrey;
+  background-color: var(--light-bg-color);
+  color: var(--light-text-color);
 }
 
 img {
@@ -13,12 +28,12 @@ img {
 a,
 a:visited,
 a:link {
-  color: lightgrey;
+  color: var(--light-text-color);
 }
 
 a:hover,
 a:active {
-  color: #f96815;
+  color: var(--light-accent-color);
 }
 
 li {
@@ -29,7 +44,7 @@ blockquote {
   margin-left: 20px;
   line-height: 28px;
   padding-left: 20px;
-  border-left: 2px solid #f96815;
+  border-left: 2px solid var(--light-accent-color);
 }
 
 details {
@@ -46,18 +61,19 @@ details {
   top: 0;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #171717;
-  border-bottom: 1px solid #f96815;
+    margin-bottom: 50px;
+  background-color: var(--light-contrast-bg-color);
 
   nav {
-    background-color: #171717;
+    background-color: var(--light-contrast-bg-color);
+    text-align: center;
   }
 }
 
-#header > nav,
-#content {
-  max-width: 60em;
+body {
+  max-width: 50em;
   margin: 0 auto;
+  padding: 50px 0px 50px 0px;
 }
 
 @media screen and (max-width: 580px) {
@@ -65,5 +81,35 @@ details {
   #content {
     max-width: 100%;
     margin: 0 10px 0 10px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: var(--dark-bg-color);
+    color: var(--dark-text-color);
+  }
+
+  a,
+  a:visited,
+  a:link {
+    color: var(--dark-text-color);
+  }
+
+  a:hover,
+  a:active {
+    color: var(--dark-accent-color);
+  }
+
+  blockquote {
+    border-left: 2px solid var(--dark-accent-color);
+  }
+
+  #header {
+    background-color: var(--dark-contrast-bg-color);
+
+    nav {
+      background-color: var(--dark-contrast-bg-color);
+    }
   }
 }
