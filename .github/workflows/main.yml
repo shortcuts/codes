@@ -12,7 +12,7 @@ concurrency:
 
 env:
   COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-  GO_VERSION: '1.24.4'
+  GO_VERSION: '1.25.3'
   KO_DOCKER_REPO: 'ghcr.io/shortcuts/codes'
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
           args: --verbose
           skip-cache: true
 
-      - run: go test -timeout 30s github.com/shortcuts/codes/cmd/...
+      - run: make test-ci
 
   build:
     if: ${{ github.ref == 'refs/heads/main' }}

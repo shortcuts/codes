@@ -40,11 +40,14 @@ clean: ## Cleans the bin folder.
 dev: stop ## Runs the service in watch mode
 	DEV=true gow -e=go,mod,html,css,md,js run cmd/main.go
 
-start: stop build ## Stops everything, build for prod, starts the image
+start: stop build ## Stops everything, build for prod, starts the image.
 	docker compose up -d
 
-stop: ## Stops leftover services
+stop: ## Stops leftover services.
 	kill $$(lsof -t -i:1313) || true
 
-test: ## Runs the test suites
+test: ## Runs the test suites in watch mode.
 	gow test -timeout 30s -race github.com/shortcuts/codes/cmd/...
+
+test-ci: ## Runs the test suites for the CI.
+	go test -timeout 30s -race github.com/shortcuts/codes/cmd/...
