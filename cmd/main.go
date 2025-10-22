@@ -37,13 +37,13 @@ type route struct {
 
 var routes = []route{
 	{
-		path:     "",
-		filename: "home.md",
+		path:           "",
+		filename:       "home.md",
 		enrichWithURLs: []enrichWithURL{
-			{
-				url:  "https://www.duolingo.com/2017-06-30/users?username=sh0rtcts",
-				name: "Duolingo",
-			},
+			// {
+			// 	url:  "https://www.duolingo.com/2017-06-30/users?username=sh0rtcts",
+			// 	name: "Duolingo",
+			// },
 		},
 	},
 	{

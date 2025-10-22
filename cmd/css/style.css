@@ -1,14 +1,14 @@
-/* https://coolors.co/503b31-654a3e-ffe6a7-ede0d4-191310-251c18-ffe6a7-f2eae2 */
+/* https://coolors.co/503b31-654a3e-ffe6a7-ede0d4-e1cbb7-191310-251c18 */
 :root {
   --light-bg-color: #503b31;
   --light-contrast-bg-color: #654a3e;
-  --light-accent-color: #ffe6a7;
-  --light-text-color: #ede0d4;
+  --light-accent-color: #c1a69a;
 
   --dark-bg-color: #191310;
   --dark-contrast-bg-color: #251c18;
-  --dark-accent-color: #ffe6a7;
-  --dark-text-color: #ede0d4;
+  --dark-accent-color: #aa8474;
+
+  --text-color: #ede0d4;
 
   color-scheme: dark light;
 }
@@ -18,7 +18,16 @@ html {
   font-optical-sizing: auto;
   font-style: normal;
   background-color: var(--light-bg-color);
-  color: var(--light-text-color);
+  color: var(--text-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--light-accent-color);
 }
 
 img {
@@ -28,7 +37,7 @@ img {
 a,
 a:visited,
 a:link {
-  color: var(--light-text-color);
+  color: var(--text-color);
 }
 
 a:hover,
@@ -45,6 +54,32 @@ blockquote {
   line-height: 28px;
   padding-left: 20px;
   border-left: 2px solid var(--light-accent-color);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid var(--light-accent-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+th,
+td {
+  border-bottom: 1px solid #30363d;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--light-accent-color);
+  width: 50%;
+  font-weight: 600;
+}
+
+tr:last-child td {
+  border-bottom: none;
 }
 
 details {
@@ -87,13 +122,23 @@ body {
 @media (prefers-color-scheme: dark) {
   html {
     background-color: var(--dark-bg-color);
-    color: var(--dark-text-color);
   }
 
-  a,
-  a:visited,
-  a:link {
-    color: var(--dark-text-color);
+  #header {
+    background-color: var(--dark-contrast-bg-color);
+
+    nav {
+      background-color: var(--dark-contrast-bg-color);
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--dark-accent-color);
   }
 
   a:hover,
@@ -105,11 +150,11 @@ body {
     border-left: 2px solid var(--dark-accent-color);
   }
 
-  #header {
-    background-color: var(--dark-contrast-bg-color);
+  table {
+    border: 1px solid var(--dark-accent-color);
+  }
 
-    nav {
-      background-color: var(--dark-contrast-bg-color);
-    }
+  th {
+    color: var(--dark-accent-color);
   }
 }
