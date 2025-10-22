@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/shortcuts/codes/compare/v1.6.0...v1.7.0) (2025-10-22)
+
+
+### Features
+
+* content rewrite ([8d2d426](https://github.com/shortcuts/codes/commit/8d2d42623d7af66de255808a4a935df73f92a5d2))
+
+
+### Bug Fixes
+
+* order ([ec1ab4d](https://github.com/shortcuts/codes/commit/ec1ab4d83b903263b01c989afbec7a07128812db))
+
 ## [1.6.0](https://github.com/shortcuts/codes/compare/v1.5.0...v1.6.0) (2025-10-21)
 
 ### Features
