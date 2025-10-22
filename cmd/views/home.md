@@ -11,8 +11,8 @@
 - open-source softwares, build in public
 - renovating a 1960 house, aspiring woodworker
 - learning, discovering, experimenting
-- music and [movies](/movies)
 - keyboards and shortcuts
+- music and [movies](/movies)
 
 ## projects
 

@@ -39,12 +39,7 @@ var routes = []route{
 	{
 		path:           "",
 		filename:       "home.md",
-		enrichWithURLs: []enrichWithURL{
-			// {
-			// 	url:  "https://www.duolingo.com/2017-06-30/users?username=sh0rtcts",
-			// 	name: "Duolingo",
-			// },
-		},
+		enrichWithURLs: []enrichWithURL{},
 	},
 	{
 		path:     "resume",
