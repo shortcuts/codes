@@ -29,7 +29,7 @@ func (a *ASTTransformer) Transform(node *ast.Document, reader text.Reader, pc pa
 
 		switch v := n.(type) {
 		case *ast.Link:
-			if string(v.Destination)[0] != '/' {
+			if string(v.Destination)[0] != '/' && string(v.Destination)[0] != '#' {
 				v.SetAttribute([]byte("target"), "_blank")
 			}
 		}
@@ -38,7 +38,7 @@ func (a *ASTTransformer) Transform(node *ast.Document, reader text.Reader, pc pa
 	})
 }
 
-func NewParser(views *embed.FS) MarkdownParser {
+func NewParser(views embed.FS) MarkdownParser {
 	return MarkdownParser{
 		parser: goldmark.New(
 			goldmark.WithExtensions(
@@ -47,6 +47,7 @@ func NewParser(views *embed.FS) MarkdownParser {
 			),
 			goldmark.WithParserOptions(
 				parser.WithAutoHeadingID(),
+				parser.WithAttribute(),
 				parser.WithASTTransformers(util.Prioritized(&ASTTransformer{}, 42)),
 			),
 			goldmark.WithRendererOptions(
@@ -54,7 +55,7 @@ func NewParser(views *embed.FS) MarkdownParser {
 				html.WithUnsafe(),
 			),
 		),
-		views: views,
+		views: &views,
 	}
 }
 

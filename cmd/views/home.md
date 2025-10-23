@@ -8,13 +8,14 @@
 
 ## hobbies
 
-- open-source softwares, build in public
+- [open-source softwares, build in public](#projects)
 - renovating a 1960 house, aspiring woodworker
 - learning, discovering, experimenting
 - keyboards and shortcuts
-- music and [movies](/movies)
+- music and [movies](https://letterboxd.com/sh0rtcts/)
+- [functional 3d printing](https://makerworld.com/en/@shortcuts)
 
-## projects
+## projects {#projects}
 
 | name                                                                                | description                                                                                         |
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |

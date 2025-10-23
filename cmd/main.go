@@ -2,9 +2,7 @@ package main
 
 import (
 	"embed"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -17,33 +15,27 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"
 
-	"github.com/shortcuts/codes/pkg/markdown"
-	"github.com/shortcuts/codes/pkg/template"
+	"github.com/shortcuts/codes/internal/markdown"
+	"github.com/shortcuts/codes/internal/template"
 )
-
-type enrichWithURL struct {
-	// url to fetch content from
-	url string
-	// name to use in the template
-	name string
-}
 
 type route struct {
 	path     string
 	filename string
-	// enrichWithURLs is a list of URLs to fetch content from and load it inside the template.
-	enrichWithURLs []enrichWithURL
 }
 
 var routes = []route{
 	{
-		path:           "",
-		filename:       "home.md",
-		enrichWithURLs: []enrichWithURL{},
+		path:     "",
+		filename: "home.md",
 	},
 	{
 		path:     "resume",
 		filename: "resume.md",
+	},
+	{
+		path:     "movies",
+		filename: "movies.md",
 	},
 	{
 		path:     "links",
@@ -126,7 +118,7 @@ func newServer() *server {
 
 	server.router.Renderer = template.NewTemplate(&views)
 
-	server.parser = markdown.NewParser(&views)
+	server.parser = markdown.NewParser(views)
 
 	content, err := server.parser.ToHTML("views/404.md")
 	if err != nil {
@@ -148,50 +140,8 @@ func (s *server) registerRoute(route route) error {
 	}
 
 	s.router.GET(fmt.Sprintf("/%s", route.path), func(c echo.Context) error {
-		data := map[string]any{"Content": content}
-
-		if s.isLocal && len(route.enrichWithURLs) > 0 {
-			for _, enrichWithURL := range route.enrichWithURLs {
-				cachedContent := s.cacheClient.Get(enrichWithURL.url)
-
-				if cachedContent == nil {
-					resp, err := s.httpClient.Get(enrichWithURL.url)
-					if err != nil {
-						s.logger.Error("error while fetching enrich URL", zap.String("route", route.path), zap.String("url", enrichWithURL.url), zap.Error(err))
-
-						continue
-					}
-					defer resp.Body.Close() // nolint: errcheck
-
-					rawContent, err := io.ReadAll(resp.Body)
-					if err != nil {
-						s.logger.Error("error while reading response body", zap.String("route", route.path), zap.String("url", enrichWithURL.url), zap.Error(err))
-
-						continue
-					}
-
-					s.logger.Debug("content fetched", zap.String("route", route.path), zap.String("url", enrichWithURL.url))
-
-					cachedContent = s.cacheClient.Set(enrichWithURL.url, rawContent, ttlcache.DefaultTTL)
-				} else {
-					s.logger.Debug("content retrieved from cache", zap.String("route", route.path), zap.String("url", enrichWithURL.url))
-				}
-
-				var content map[string]any
-
-				err = json.Unmarshal(cachedContent.Value(), &content)
-				if err != nil {
-					s.logger.Error("error while unmarshalling response body", zap.String("route", route.path), zap.String("url", enrichWithURL.url), zap.Error(err))
-
-					continue
-				}
-
-				data[enrichWithURL.name] = content
-			}
-		}
-
 		c.Response().Header().Add("Last-Modified", s.lastModified)
-		return c.Render(http.StatusOK, "layout", data)
+		return c.Render(http.StatusOK, "layout", map[string]any{"Content": content})
 	})
 
 	return nil
