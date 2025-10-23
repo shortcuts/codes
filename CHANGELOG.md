@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/shortcuts/codes/compare/v1.7.0...v1.7.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* cleanup ([ba30a2d](https://github.com/shortcuts/codes/commit/ba30a2dd3273cd0c664a3f008a7f5d8d9f8701bf))
+
 ## [1.7.0](https://github.com/shortcuts/codes/compare/v1.6.0...v1.7.0) (2025-10-22)
 
 
