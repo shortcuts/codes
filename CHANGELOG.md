@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/shortcuts/codes/compare/v1.7.1...v1.8.0) (2025-11-24)
+
+
+### Features
+
+* resume content and homepage ([9dd2e6b](https://github.com/shortcuts/codes/commit/9dd2e6b5318b64bacaa5c35974610a507ba2d7fb))
+
 ## [1.7.1](https://github.com/shortcuts/codes/compare/v1.7.0...v1.7.1) (2025-10-23)
 
 ### Bug Fixes
