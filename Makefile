@@ -26,6 +26,9 @@ lint: ## Lint Go files
 	golangci-lint run --fix
 	prettier --write .
 
+lint-md: ## Lint Markdown files
+	markdownlint 'cmd/views/*.md' --fix
+
 ##@ Development
 
 build: ## Builds the service

@@ -2,22 +2,19 @@
 
 ## [1.7.1](https://github.com/shortcuts/codes/compare/v1.7.0...v1.7.1) (2025-10-23)
 
-
 ### Bug Fixes
 
-* cleanup ([ba30a2d](https://github.com/shortcuts/codes/commit/ba30a2dd3273cd0c664a3f008a7f5d8d9f8701bf))
+- cleanup ([ba30a2d](https://github.com/shortcuts/codes/commit/ba30a2dd3273cd0c664a3f008a7f5d8d9f8701bf))
 
 ## [1.7.0](https://github.com/shortcuts/codes/compare/v1.6.0...v1.7.0) (2025-10-22)
 
-
 ### Features
 
-* content rewrite ([8d2d426](https://github.com/shortcuts/codes/commit/8d2d42623d7af66de255808a4a935df73f92a5d2))
-
+- content rewrite ([8d2d426](https://github.com/shortcuts/codes/commit/8d2d42623d7af66de255808a4a935df73f92a5d2))
 
 ### Bug Fixes
 
-* order ([ec1ab4d](https://github.com/shortcuts/codes/commit/ec1ab4d83b903263b01c989afbec7a07128812db))
+- order ([ec1ab4d](https://github.com/shortcuts/codes/commit/ec1ab4d83b903263b01c989afbec7a07128812db))
 
 ## [1.6.0](https://github.com/shortcuts/codes/compare/v1.5.0...v1.6.0) (2025-10-21)
 
