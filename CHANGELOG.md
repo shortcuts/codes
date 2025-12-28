@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/shortcuts/codes/compare/v1.8.0...v1.9.0) (2025-12-28)
+
+
+### Features
+
+* new resume ([d457d6e](https://github.com/shortcuts/codes/commit/d457d6e415cc7590ba84c656d8b80b0e6e064987))
+
 ## [1.8.0](https://github.com/shortcuts/codes/compare/v1.7.1...v1.8.0) (2025-11-24)
 
 
