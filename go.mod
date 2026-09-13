@@ -1,6 +1,6 @@
 module github.com/shortcuts/codes
 
-go 1.25.3
+go 1.27.1
 
 require (
 	github.com/jellydator/ttlcache/v3 v3.4.0
