@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.10.0](https://github.com/shortcuts/codes/compare/v1.9.0...v1.10.0) (2026-09-14)
+
+
+### Features
+
+* **content:** add locationjoystick to side projects ([5c874db](https://github.com/shortcuts/codes/commit/5c874dbc735a53ff85c9e5f28e998804936f6661))
+* **content:** swap search-and-replace.nvim for radin in side projects ([e075d04](https://github.com/shortcuts/codes/commit/e075d04c4a5efd36f9d1416948441ecf8e7f1ada))
+
+
+### Bug Fixes
+
+* **ci:** bump golangci-lint to v2.13.2 ([88af285](https://github.com/shortcuts/codes/commit/88af2850e4422a85de143a8cfcdb350d60c1fa79))
+* **content:** update Algolia dates to reflect ongoing employment ([aebaec2](https://github.com/shortcuts/codes/commit/aebaec2616e29cf419be29b2193f9720a14e7572))
+* update content ([161de28](https://github.com/shortcuts/codes/commit/161de280be303734b650ea342e0381c9048ca69a))
+
 ## [1.9.0](https://github.com/shortcuts/codes/compare/v1.8.0...v1.9.0) (2025-12-28)
 
 
