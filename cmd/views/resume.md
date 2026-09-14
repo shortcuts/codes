@@ -26,6 +26,7 @@
 | [neovim-plugin-boilerplate](https://github.com/shortcuts/neovim-plugin-boilerplate) | writing [Neovim](https://neovim.io/) plugins made easy                                                                    |
 | [search-and-replace.nvim](https://github.com/shortcuts/search-and-replace.nvim)     | wrapper of the native [Neovim](https://neovim.io/) search and replace commands to reduce redundancy                       |
 | [pgpemu](https://github.com/shortcuts/pgpemu)                                       | esp32c3 auto-catcher emulator device for [Pokémon GO](https://pokemongo.com/)                                             |
+| [locationjoystick](https://github.com/shortcuts/locationjoystick)                   | Android app for GPS spoofing and mock locations                                                                           |
 | [codes](https://github.com/shortcuts/codes)                                         | personal website built in Go, HTMX and Markdown                                                                      |
 | [dotfiles](https://github.com/shortcuts/dotfiles)                                   | my daily driver                                                                                                           |
 
