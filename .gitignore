@@ -24,3 +24,5 @@ out.*
 
 # md
 .obsidian
+
+.claude
