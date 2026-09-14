@@ -31,7 +31,7 @@
 
 ## work
 
-### (2020-2025) ~ [Algolia](https://www.linkedin.com/company/algolia/)
+### (2020-Present) ~ [Algolia](https://www.linkedin.com/company/algolia/)
 
 #### Missions
 
