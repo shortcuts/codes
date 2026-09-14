@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jellydator/ttlcache/v3"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -48,8 +47,6 @@ var views embed.FS
 
 type server struct {
 	isLocal      bool
-	cacheClient  *ttlcache.Cache[string, []byte]
-	httpClient   *http.Client
 	lastModified string
 	logger       *zap.Logger
 	parser       markdown.MarkdownParser
@@ -63,19 +60,16 @@ func (s *server) close() {
 }
 
 func newServer() *server {
-	cacheClient := ttlcache.New(ttlcache.WithTTL[string, []byte](24*time.Hour), ttlcache.WithDisableTouchOnHit[string, []byte](), ttlcache.WithCapacity[string, []byte](1024*1024*10))
-
 	server := &server{
 		isLocal:      os.Getenv("DEV") != "",
 		lastModified: time.Now().Format(time.RFC1123),
-		httpClient:   &http.Client{Timeout: 1 * time.Second},
-		cacheClient:  cacheClient,
 	}
 
 	server.router = echo.New()
 
 	server.router.Use(
 		middleware.Recover(),
+		middleware.Secure(),
 		middleware.RemoveTrailingSlash(),
 		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
 			rate.Limit(20),
@@ -163,7 +157,14 @@ func main() {
 		baseRoute = "localhost"
 	}
 
-	err := s.router.Start(baseRoute + ":1313")
+	err := s.router.StartServer(&http.Server{
+		Addr:              baseRoute + ":1313",
+		Handler:           s.router,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	})
 	if err != nil {
 		s.logger.Fatal(err.Error())
 	}

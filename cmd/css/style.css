@@ -38,11 +38,17 @@ a,
 a:visited,
 a:link {
   color: var(--text-color);
+  transition: color 0.15s ease-out;
 }
 
 a:hover,
 a:active {
   color: var(--light-accent-color);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--light-accent-color);
+  outline-offset: 2px;
 }
 
 li {
@@ -66,7 +72,7 @@ table {
 
 th,
 td {
-  border-bottom: 1px solid #30363d;
+  border-bottom: 1px solid var(--light-accent-color);
   padding: 0.75rem 1rem;
   text-align: left;
   vertical-align: top;
@@ -154,7 +160,16 @@ body {
     border: 1px solid var(--dark-accent-color);
   }
 
+  th,
+  td {
+    border-bottom: 1px solid var(--dark-accent-color);
+  }
+
   th {
     color: var(--dark-accent-color);
+  }
+
+  a:focus-visible {
+    outline-color: var(--dark-accent-color);
   }
 }
