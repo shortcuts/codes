@@ -12,7 +12,7 @@ concurrency:
 
 env:
   COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-  GOLANGCI_LINT_VERSION: 'v2.13.2'
+  GOLANGCI_LINT_VERSION: 'v2.15.0'
   GO_VERSION: '1.27.1'
   KO_DOCKER_REPO: 'ghcr.io/shortcuts/codes'
 
@@ -21,10 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ env.GO_VERSION }}
           cache-dependency-path: |
@@ -43,7 +43,7 @@ jobs:
       - run: go mod verify
 
       - name: Lint
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
           args: --verbose
@@ -57,11 +57,11 @@ jobs:
     timeout-minutes: 15
     needs: test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
         with:
           token: ${{ secrets.TOKEN }}
@@ -69,7 +69,7 @@ jobs:
 
       - name: Setup Go
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ env.GO_VERSION }}
           cache-dependency-path: |
@@ -78,7 +78,7 @@ jobs:
 
       - name: Setup Ko
         if: ${{ steps.release.outputs.release_created }}
-        uses: ko-build/setup-ko@v0.6
+        uses: ko-build/setup-ko@v0.10
 
       - run: make build
         if: ${{ steps.release.outputs.release_created }}
