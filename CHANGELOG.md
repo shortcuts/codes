@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/shortcuts/codes/compare/v1.10.0...v1.11.0) (2026-11-02)
+
+
+### Features
+
+* **content:** list clidraw and rpi in side projects ([e55cc5b](https://github.com/shortcuts/codes/commit/e55cc5b658cdf60efdc7b8ea02ba7c4b91ac03ae))
+
+
+### Bug Fixes
+
+* **content:** drop private rpi from side projects ([6c1aab0](https://github.com/shortcuts/codes/commit/6c1aab0cb5e966d073da87c91b68054ae7e73756))
+
 ## [1.10.0](https://github.com/shortcuts/codes/compare/v1.9.0...v1.10.0) (2026-09-14)
 
 
