@@ -29,7 +29,6 @@
 | [radin](https://github.com/shortcuts/radin)                                         | agentic stack for those who have to save tokens                                                                           |
 | [codes](https://github.com/shortcuts/codes)                                         | personal website built in Go, HTMX and Markdown                                                                           |
 | [clidraw](https://github.com/shortcuts/clidraw)                                     | sketch diagrams from the terminal                                                                                         |
-| rpi                                                                                 | my raspberry pi homelab (private)                                                                                         |
 | [dotfiles](https://github.com/shortcuts/dotfiles)                                   | my daily driver                                                                                                           |
 
 ## work
